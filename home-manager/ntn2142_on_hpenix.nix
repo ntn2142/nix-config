@@ -52,10 +52,10 @@
       settings = {
         gui.theme = {
           activeBorderColor = [
-            "#fab387"
+            "#cba6f7"
             "bold"
           ];
-          inactiveBorderColor = [ "#89b4fa" ];
+          inactiveBorderColor = [ "#94e2d5" ];
           optionsTextColor = [ "#89b4fa" ];
           selectedLineBgColor = [ "#313244" ];
           cherryPickedCommitBgColor = [ "#45475a" ];
