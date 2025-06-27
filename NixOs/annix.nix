@@ -12,6 +12,29 @@ in
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # nvidia config
+  # Enable OpenGl
+  hardware.graphics.enable = true;
+  # Load nvidia drivers for Xorg and Wayland
+  services.xserver.videoDrivers = [
+    "nvidia"
+  ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    powerManagement.enable = false;
+
+    powerManagement.finegrained = false;
+
+    open = true;
+
+    nvidiaSettings = true;
+
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
   networking.hostName = "annix";
 
   # Enable networking
