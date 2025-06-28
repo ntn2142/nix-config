@@ -4,11 +4,12 @@
   ...
 }:
 {
-
   home.username = "ntn2142";
   home.homeDirectory = "/home/ntn2142";
 
   home.stateVersion = "25.05";
+
+  nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
     tree-sitter
@@ -38,10 +39,23 @@
       accents = [ "blue" ];
       winDecStyles = [ "classic" ];
     })
+    spotify
     dotter
   ];
 
   programs = {
+    bash = {
+      enable = true;
+
+    };
+    starship = {
+      enable = true;
+      enableBashIntegration = true;
+      enableInteractive = true;
+      settings = {
+        add_newline = false;
+      };
+    };
     git = {
       enable = true;
       userName = "ntn2142";
@@ -97,8 +111,15 @@
         };
       };
     };
-    firefox.enable = true;
-
+    firefox = {
+      enable = true;
+      profiles.default.search.default = "ddg";
+    };
+    direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      nix-direnv.enable = true;
+    };
   };
 
 }

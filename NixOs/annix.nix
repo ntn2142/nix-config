@@ -24,7 +24,7 @@ in
     modesetting.enable = true;
 
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    powerManagement.enable = false;
+    powerManagement.enable = true;
 
     powerManagement.finegrained = false;
 
@@ -99,9 +99,6 @@ in
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ntn2142 = {
     isNormalUser = true;
@@ -113,7 +110,7 @@ in
   };
 
   # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = false;
+  services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "ntn2142";
 
   # Allow unfree packages
@@ -138,10 +135,15 @@ in
     wayland-utils
     wl-clipboard
     kdePackages.sddm-kcm # Configuration module for SDDM
-    direnv
-    nix-direnv
     home-manager
   ];
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
+  };
 
   system.stateVersion = systemVersion;
 
