@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
 
-
-# config=$(ls ./NixOs/ | fzf)
-#
-# sudo cp "./NixOs/$config" "/etc/nixos/configuration.nix"
-# nixos-rebuild switch
-
 set -euo pipefail
 
 # Dateiname basierend auf Hostname
-host_config="./NixOs/$(hostname).nix"
+host_config="./nixos/$(hostname).nix"
 
 # Prüfe, ob passende Datei existiert
 if [[ -f "$host_config" ]]; then

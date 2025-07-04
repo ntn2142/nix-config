@@ -1,9 +1,6 @@
 { config, pkgs, ... }:
-let
-  systemVersion = "25.05";
-in
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ ../nixos/hardware/hpenix.nix ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -160,7 +157,5 @@ in
     nix-direnv
     home-manager
   ];
-
-  system.stateVersion = systemVersion;
 
 }
