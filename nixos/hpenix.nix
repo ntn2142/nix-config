@@ -1,6 +1,9 @@
-{ config, pkgs, ... }:
 {
-  imports = [ ../nixos/hardware/hpenix.nix ];
+  config,
+  pkgs,
+  ...
+}:
+{
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -157,5 +160,4 @@
     nix-direnv
     home-manager
   ];
-
 }
