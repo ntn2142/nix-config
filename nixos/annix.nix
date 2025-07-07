@@ -1,9 +1,5 @@
 { config, pkgs, ... }:
-let
-  systemVersion = "25.05";
-in
 {
-  imports = [ ./hardware-configuration.nix ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -135,7 +131,6 @@ in
     wayland-utils
     wl-clipboard
     kdePackages.sddm-kcm # Configuration module for SDDM
-    home-manager
   ];
 
   programs.steam = {
@@ -144,7 +139,4 @@ in
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
-
-  system.stateVersion = systemVersion;
-
 }

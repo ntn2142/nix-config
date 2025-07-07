@@ -158,6 +158,5 @@
     kdePackages.sddm-kcm # Configuration module for SDDM
     direnv
     nix-direnv
-    home-manager
   ];
 }

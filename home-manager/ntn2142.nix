@@ -9,8 +9,6 @@
 
   home.stateVersion = "25.05";
 
-  # nixpkgs.config.allowUnfree = true;
-
   home.packages = with pkgs; [
     tree-sitter
     fzf
@@ -46,6 +44,10 @@
   programs = {
     bash = {
       enable = true;
+      shellAliases = {
+        ssh_start_agent = "eval $(ssh-agent)";
+        ssh_add = "ssh-add ~/.ssh/$(ls ~/.ssh/|fzf)";
+      };
     };
     starship = {
       enable = true;
