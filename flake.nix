@@ -14,6 +14,21 @@
       home-manager,
       ...
     }:
+    let
+      homeConfigurations = {
+        ntn2142 = {
+          imports = [ ./home-manager/ntn2142.nix ];
+        };
+      };
+      homeNixosConfiguration = user: [
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.${user} = homeConfigurations.${user};
+        }
+      ];
+    in
     {
       nixosConfigurations = {
         hpenix = nixpkgs.lib.nixosSystem {
@@ -24,13 +39,7 @@
             }
             ./nixos/hardware/hpenix.nix
             ./nixos/hpenix.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.ntn2142 = ./home-manager/ntn2142.nix;
-            }
-          ];
+          ] ++ homeNixosConfiguration "ntn2142";
         };
         annix = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -40,13 +49,7 @@
             }
             ./nixos/annix.nix
             ./nixos/hardware/annix.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.ntn2142 = ./home-manager/ntn2142.nix;
-            }
-          ];
+          ] ++ homeNixosConfiguration "ntn2142";
         };
       };
 
