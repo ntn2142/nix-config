@@ -39,6 +39,7 @@
     })
     spotify
     dotter
+    libreoffice-qt6-fresh # for stable kde plasma 6
   ];
 
   programs = {

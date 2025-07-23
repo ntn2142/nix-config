@@ -28,6 +28,42 @@
           home-manager.users.${user} = homeConfigurations.${user};
         }
       ];
+      mkSingleNixosConfig =
+        { hostname, username }:
+        nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            {
+              system.stateVersion = "25.05";
+            }
+            ./nixos/hardware/${hostname}.nix
+            ./nixos/${hostname}.nix
+            ./nixos/locale_timezone.nix.nix
+          ] ++ homeNixosConfiguration username;
+        };
+      mkConfigNameValuePair =
+        elem@{ hostname, username }:
+        let
+          nvPair = nixpkgs.lib.list.nameValuePair;
+          config = nixpkgs.lib.nixosSystem mkSingleNixosConfig elem;
+        in
+        nvPair hostname config;
+
+      mkNixosConfigurations =
+        config_list:
+        let
+          processElem =
+            elem@{ username, hostname }: nixpkgs.lib.attrs.nameValuePair hostname (mkSingleNixosConfig elem);
+          finalConfigList = nixpkgs.lib.losts.forEach config_list processElem;
+
+        in
+        builtins.listToAttrs finalConfigList;
+      tmp = mkNixosConfigurations [
+        {
+          hostname = "hpenix";
+          username = "ntn2142";
+        }
+      ];
     in
     {
       nixosConfigurations = {
@@ -39,6 +75,7 @@
             }
             ./nixos/hardware/hpenix.nix
             ./nixos/hpenix.nix
+            ./nixos/locale_timezone.nix.nix
           ] ++ homeNixosConfiguration "ntn2142";
         };
         annix = nixpkgs.lib.nixosSystem {
@@ -48,6 +85,7 @@
               system.stateVersion = "25.05";
             }
             ./nixos/annix.nix
+            ./nixos/locale_timezone.nix.nix
             ./nixos/hardware/annix.nix
           ] ++ homeNixosConfiguration "ntn2142";
         };
