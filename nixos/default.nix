@@ -9,8 +9,8 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable networking
-  # networking.networkmanager.enable = true;
-  # networking.networkmanager.wifi.backend = "wpa_supplicant";
+  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.backend = "wpa_supplicant";
 
   # bluetooth
   hardware.bluetooth.enable = true; # enables support for Bluetooth
