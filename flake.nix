@@ -15,81 +15,76 @@
       ...
     }:
     let
-      homeConfigurations = {
-        ntn2142 = {
-          imports = [ ./home-manager/ntn2142.nix ];
-        };
-      };
-      homeNixosConfiguration = user: [
+      homeNixosConfiguration = username: [
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.${user} = homeConfigurations.${user};
+          home-manager.users.${username} = {
+            imports = [ ./home-manager/${username}.nix ];
+          };
         }
       ];
+
       mkSingleNixosConfig =
-        { hostname, username }:
+        {
+          hostname,
+          username,
+          modules ? [ ],
+        }:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [
-            {
-              system.stateVersion = "25.05";
-            }
-            ./nixos/hardware/${hostname}.nix
-            ./nixos/${hostname}.nix
-            ./nixos/locale_timezone.nix.nix
-          ] ++ homeNixosConfiguration username;
+          modules =
+            [
+              {
+                system.stateVersion = "25.05";
+                networking.hostName = hostname;
+              }
+              ./nixos/hardware/${hostname}.nix
+              # ./nixos/${hostname}.nix
+            ]
+            ++ (homeNixosConfiguration username)
+            ++ modules;
         };
-      mkConfigNameValuePair =
-        elem@{ hostname, username }:
-        let
-          nvPair = nixpkgs.lib.list.nameValuePair;
-          config = nixpkgs.lib.nixosSystem mkSingleNixosConfig elem;
-        in
-        nvPair hostname config;
 
       mkNixosConfigurations =
         config_list:
         let
           processElem =
-            elem@{ username, hostname }: nixpkgs.lib.attrs.nameValuePair hostname (mkSingleNixosConfig elem);
-          finalConfigList = nixpkgs.lib.losts.forEach config_list processElem;
+            elem@{ hostname, ... }: nixpkgs.lib.attrsets.nameValuePair hostname (mkSingleNixosConfig elem);
+          finalConfigList = nixpkgs.lib.lists.forEach config_list processElem;
 
         in
         builtins.listToAttrs finalConfigList;
-      tmp = mkNixosConfigurations [
+    in
+    {
+      nixosConfigurations = mkNixosConfigurations [
+        {
+          hostname = "annix";
+          username = "ntn2142";
+          modules = [
+            ./nixos/default.nix
+            ./nixos/locale_timezone_de.nix
+            ./nixos/nvidia.nix
+            ./nixos/kde_plasma.nix
+            ./nixos/programs.nix
+            ./nixos/user_ntn2142.nix
+          ];
+        }
         {
           hostname = "hpenix";
           username = "ntn2142";
+          modules = [
+            ./nixos/default.nix
+            ./nixos/locale_timezone_de.nix
+            ./nixos/nvidia.nix
+            ./nixos/kde_plasma.nix
+            ./nixos/programs.nix
+            ./nixos/user_ntn2142.nix
+          ];
+
         }
       ];
-    in
-    {
-      nixosConfigurations = {
-        hpenix = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            {
-              system.stateVersion = "25.05";
-            }
-            ./nixos/hardware/hpenix.nix
-            ./nixos/hpenix.nix
-            ./nixos/locale_timezone.nix.nix
-          ] ++ homeNixosConfiguration "ntn2142";
-        };
-        annix = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            {
-              system.stateVersion = "25.05";
-            }
-            ./nixos/annix.nix
-            ./nixos/locale_timezone.nix.nix
-            ./nixos/hardware/annix.nix
-          ] ++ homeNixosConfiguration "ntn2142";
-        };
-      };
 
     };
 }
