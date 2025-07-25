@@ -77,7 +77,6 @@
           modules = [
             ./nixos/default.nix
             ./nixos/locale_timezone_de.nix
-            ./nixos/nvidia.nix
             ./nixos/kde_plasma.nix
             ./nixos/programs.nix
             ./nixos/user_ntn2142.nix
