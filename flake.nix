@@ -82,6 +82,8 @@
             ./nixos/kde_plasma.nix
             ./nixos/programs.nix
             ./nixos/user_ntn2142.nix
+            ./nixos/nvidia.nix
+            ./nixos/nvidia_optimus.nix
           ];
 
         }

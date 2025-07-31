@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   # Enable OpenGl
   hardware.graphics.enable = true;
