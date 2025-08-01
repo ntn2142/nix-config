@@ -9,6 +9,8 @@
   ];
 
   hardware.nvidia = {
+    # $ nix shell nixpkgs#pciutils --command lspci -k -d ::03xx
+    # https://nouveau.freedesktop.org/CodeNames.html
 
     # Modesetting is required.
     modesetting.enable = true;

@@ -8,14 +8,14 @@
     };
   };
   outputs =
-    inputs@{
-      self,
+    {
       nixpkgs,
       home-manager,
       ...
     }:
     let
       lib = nixpkgs.lib;
+
       homeNixosConfiguration = username: [
         home-manager.nixosModules.home-manager
         {
