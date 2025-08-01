@@ -15,6 +15,7 @@
       ...
     }:
     let
+      lib = nixpkgs.lib;
       homeNixosConfiguration = username: [
         home-manager.nixosModules.home-manager
         {
@@ -26,33 +27,35 @@
         }
       ];
 
+      ifPathExists = path: lib.optional (lib.pathExists path) path;
+
       mkSingleNixosConfig =
         {
           hostname,
           username,
           modules ? [ ],
         }:
-        nixpkgs.lib.nixosSystem {
+        lib.nixosSystem {
           system = "x86_64-linux";
-          modules =
-            [
-              {
-                system.stateVersion = "25.05";
-                networking.hostName = hostname;
-              }
-              ./nixos/hardware/${hostname}.nix
-              # ./nixos/${hostname}.nix
-            ]
-            ++ (homeNixosConfiguration username)
-            ++ modules;
+          modules = [
+            {
+              system.stateVersion = "25.05";
+              networking.hostName = hostname;
+            }
+            ./nixos/hardware/${hostname}.nix
+            # ./nixos/${hostname}.nix
+          ]
+          ++ (homeNixosConfiguration username)
+          ++ ifPathExists ./nixos/${hostname}.nix
+          ++ modules;
         };
 
       mkNixosConfigurations =
         config_list:
         let
           processElem =
-            elem@{ hostname, ... }: nixpkgs.lib.attrsets.nameValuePair hostname (mkSingleNixosConfig elem);
-          finalConfigList = nixpkgs.lib.lists.forEach config_list processElem;
+            elem@{ hostname, ... }: lib.attrsets.nameValuePair hostname (mkSingleNixosConfig elem);
+          finalConfigList = lib.lists.forEach config_list processElem;
 
         in
         builtins.listToAttrs finalConfigList;
@@ -65,7 +68,6 @@
           modules = [
             ./nixos/default.nix
             ./nixos/locale_timezone_de.nix
-            ./nixos/nvidia.nix
             ./nixos/kde_plasma.nix
             ./nixos/programs.nix
             ./nixos/user_ntn2142.nix
