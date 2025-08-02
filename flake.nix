@@ -16,17 +16,6 @@
     let
       lib = nixpkgs.lib;
 
-      homeNixosConfiguration = username: [
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.${username} = {
-            imports = [ ./home-manager/${username}.nix ];
-          };
-        }
-      ];
-
       ifPathExists = path: lib.optional (lib.pathExists path) path;
 
       mkSingleNixosConfig =
@@ -37,15 +26,16 @@
         }:
         lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit username home-manager; };
           modules = [
+            home-manager.nixosModules.home-manager
+            ./nixos/user.nix
             {
               system.stateVersion = "25.05";
               networking.hostName = hostname;
             }
             ./nixos/hardware/${hostname}.nix
-            # ./nixos/${hostname}.nix
           ]
-          ++ (homeNixosConfiguration username)
           ++ ifPathExists ./nixos/${hostname}.nix
           ++ modules;
         };
@@ -70,7 +60,6 @@
             ./nixos/locale_timezone_de.nix
             ./nixos/kde_plasma.nix
             ./nixos/programs.nix
-            ./nixos/user_ntn2142.nix
           ];
         }
         {
@@ -81,7 +70,6 @@
             ./nixos/locale_timezone_de.nix
             ./nixos/kde_plasma.nix
             ./nixos/programs.nix
-            ./nixos/user_ntn2142.nix
             ./nixos/nvidia.nix
             ./nixos/nvidia_optimus.nix
           ];
