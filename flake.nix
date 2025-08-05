@@ -70,7 +70,6 @@
             ./nixos/locale_timezone_de.nix
             ./nixos/kde_plasma.nix
             ./nixos/programs.nix
-            ./nixos/nvidia.nix
             ./nixos/nvidia_optimus.nix
           ];
 
