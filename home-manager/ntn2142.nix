@@ -45,10 +45,14 @@
   programs = {
     bash = {
       enable = true;
-      shellAliases = {
-        ssh_start_agent = "eval $(ssh-agent)";
-        ssh_add = "ssh-add ~/.ssh/$(ls ~/.ssh/|fzf)";
-      };
+    };
+    ssh = {
+      enable = true;
+      addKeysToAgent = "yes";
+      # add the following lines to ~/shh/config for each host
+      # Host github.com
+      #     IdentityFile ~/.ssh/github
+      #     AddKeysToAgent yes
     };
     starship = {
       enable = true;
