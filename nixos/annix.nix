@@ -21,7 +21,7 @@
 
     # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = true;
+    powerManagement.finegrained = false;
 
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
@@ -29,13 +29,14 @@
     # supported GPUs is at:
     # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
-    # should only ba set to false if the gpu has an older architecture than turing (RTX 20 Series)
-    open = true;
+    # should only be set to false if the gpu has an older architecture than turing (RTX 20 Series)
+    open = false;
 
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
+    # package = config.boot.kernelPackages.nvidiaPackages.beta;
     package = config.boot.kernelPackages.nvidiaPackages.stable; # == production == latest
   };
 }

@@ -10,9 +10,10 @@
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
+    ###########################
+    ### programs for neovim ###
+    ###########################
     tree-sitter
-    fzf
-    nerd-fonts._0xproto
     clang
     clang-tools
     nil
@@ -29,6 +30,9 @@
     ruff
     jdt-language-server
     google-java-format
+    ###########################
+    fzf
+    nerd-fonts._0xproto
     (catppuccin-kde.override {
       flavour = [
         "mocha"

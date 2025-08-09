@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 {
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
     nh
-    neovim # editor
+    pkgs-unstable.neovim # editor
     git
     ripgrep
     fd
